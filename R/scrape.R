@@ -100,6 +100,8 @@ for(j in seq_along(1:length(atp_links$url))){
     select(ep_num, line_num, line) 
   
   atp_transcripts <- bind_rows(atp_transcripts, ep_tbl)
+  
+  print(paste0("Episode ", j, " scraping complete."))
 }
 
 atp_data <- atp_links %>%
