@@ -165,7 +165,7 @@ saveRDS(hypercritical_data, "data/hypercritical.rda")
 
 # the talk show ####
 
-# get hi show links
+# get talk show links
 tts_url <- getURL("http://podsearch.david-smith.org/shows/3")
 tts_page <- readLines(tc <- textConnection(tts_url)); close(tc)
 
