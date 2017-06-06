@@ -42,7 +42,8 @@ for(i in seq_along(1:length(cortex_links$url))){
   full_text <- episode_html %>%
     str_extract_all("►</a> \n    [a-zA-Z0-9[:punct:] ]+")
   
-  ep_tbl <- tibble(line_num =  1:length(full_text[[1]]), raw_line = full_text[[1]]) %>%
+  ep_tbl <- tibble(line_num =  1:length(full_text[[1]]), 
+                   raw_line = full_text[[1]]) %>%
     mutate(line = str_replace_all(raw_line,"►</a> \n    ","" ),
            ep_num = i) %>%
     select(ep_num, line_num, line) 
@@ -80,9 +81,9 @@ atp_links <- atp_df %>%
 atp_transcripts <- tibble(ep_num = integer(), line_num = integer(),
                              line = character())
 
-for(i in seq_along(1:length(atp_links$url))){
+for(j in seq_along(1:length(atp_links$url))){
   
-  episode_url <- atp_links$url[i]
+  episode_url <- atp_links$url[j]
   
   episode_data <- read_html(episode_url) %>%
     html_nodes("div")
@@ -92,9 +93,10 @@ for(i in seq_along(1:length(atp_links$url))){
   full_text <- episode_html %>%
     str_extract_all("►</a> \n    [a-zA-Z0-9[:punct:] ]+")
   
-  ep_tbl <- tibble(line_num =  1:length(full_text[[1]]), raw_line = full_text[[1]]) %>%
+  ep_tbl <- tibble(line_num =  1:length(full_text[[1]]), 
+                   raw_line = full_text[[1]]) %>%
     mutate(line = str_replace_all(raw_line,"►</a> \n    ","" ),
-           ep_num = i) %>%
+           ep_num = j) %>%
     select(ep_num, line_num, line) 
   
   atp_transcripts <- bind_rows(atp_transcripts, ep_tbl)
@@ -133,9 +135,9 @@ hypercritical_links <- hypercritical_df %>%
 hypercritical_transcripts <- tibble(ep_num = integer(), line_num = integer(),
                           line = character())
 
-for(i in seq_along(1:length(hypercritical_links$url))){
+for(k in seq_along(1:length(hypercritical_links$url))){
   
-  episode_url <- hypercritical_links$url[i]
+  episode_url <- hypercritical_links$url[k]
   
   episode_data <- read_html(episode_url) %>%
     html_nodes("div")
@@ -145,9 +147,10 @@ for(i in seq_along(1:length(hypercritical_links$url))){
   full_text <- episode_html %>%
     str_extract_all("►</a> \n    [a-zA-Z0-9[:punct:] ]+")
   
-  ep_tbl <- tibble(line_num =  1:length(full_text[[1]]), raw_line = full_text[[1]]) %>%
+  ep_tbl <- tibble(line_num =  1:length(full_text[[1]]), 
+                   raw_line = full_text[[1]]) %>%
     mutate(line = str_replace_all(raw_line,"►</a> \n    ","" ),
-           ep_num = i) %>%
+           ep_num = k) %>%
     select(ep_num, line_num, line) 
   
   hypercritical_transcripts <- bind_rows(hypercritical_transcripts, ep_tbl)
@@ -188,9 +191,9 @@ tts_links <- tts_df %>%
 tts_transcripts <- tibble(ep_num = integer(), line_num = integer(),
                                     line = character())
 
-for(i in seq_along(1:length(tts_links$url))){
+for(l in seq_along(1:length(tts_links$url))){
   
-  episode_url <- tts_links$url[6]
+  episode_url <- tts_links$url[l]
   
   episode_data <- read_html(episode_url) %>%
     html_nodes("div")
@@ -203,12 +206,12 @@ for(i in seq_along(1:length(tts_links$url))){
   ep_tbl <- tibble(line_num =  1:length(full_text[[1]]), 
                    raw_line = full_text[[1]]) %>%
     mutate(line = str_replace_all(raw_line,"►</a> \n    ","" ),
-           ep_num = i) %>%
+           ep_num = l) %>%
     select(ep_num, line_num, line) 
   
   tts_transcripts <- bind_rows(tts_transcripts, ep_tbl)
   
-  print(paste0("Episode ", i, " scraping complete."))
+  print(paste0("Episode ", l, " scraping complete."))
 }
 
 tts_data <- tts_links %>%
