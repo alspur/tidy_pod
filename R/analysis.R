@@ -35,7 +35,25 @@ total_words <- podcast_words %>%
 podcast_words <- left_join(podcast_words, total_words) %>% 
   bind_tf_idf(word, podcast, n)
 
-podcast_plot <- podcast_words %>% 
+podcast_words %>%  
+  group_by(podcast) %>% 
+  top_n(10) %>% 
+  ungroup() %>% 
+  ggplot(aes(reorder(word, tf_idf), tf_idf, fill = podcast)) +
+  geom_col(show.legend=FALSE) +
+  facet_wrap(~podcast, scales = "free") +
+  coord_flip() +
+  labs(x = "tf-idf",
+       title = "Most Important Words by Podcast",
+       subtitle = "Measured by tf-idf") +
+  scale_fill_manual(values = c("blue4", "grey18",
+                               "palegreen4", "lightsteelblue4"))+
+  theme(legend.position = "none",
+        axis.title.y = element_blank())
+
+ggsave("figures/podcasts.png", height = 6, width = 10, units = "in")
+
+podcast_plot_clean <- podcast_words %>% 
   arrange(desc(tf_idf)) %>% 
   filter(word != "mattress") %>%
   filter(word != "casper") %>%
@@ -48,11 +66,12 @@ podcast_plot <- podcast_words %>%
   filter(word != "tts") %>%
   filter(word != "afm") %>%
   filter(word != "fd") %>%
+  filter(word != "wealthfront") %>%
   filter(word != "apron") %>%
+  filter(word != "cgpgrey") %>%
   mutate(word = factor(word, levels = rev(unique(word))))
 
-
-podcast_plot %>%  
+podcast_plot_clean %>%  
   group_by(podcast) %>% 
   top_n(10) %>% 
   ungroup() %>% 
@@ -63,9 +82,12 @@ podcast_plot %>%
   labs(x = "tf-idf",
        title = "Most Important Words by Podcast",
        subtitle = "Measured by tf-idf") +
-  scale_fill_manual(values = c("blue4", "grey18", "palegreen4", "snow4"))+
+  scale_fill_manual(values = c("blue4", "grey18",
+                               "palegreen4", "lightsteelblue4"))+
   theme(legend.position = "none",
         axis.title.y = element_blank())
+
+ggsave("figures/podcasts_clean.png", height = 6, width = 10, units = "in")
 
 # sentiment analysis ####
 
